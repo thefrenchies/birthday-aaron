@@ -1,107 +1,135 @@
 <!DOCTYPE html>
 <html lang="fr">
-
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>H4CKED_B1RTHD4Y_AARON</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>H4CKED_B1RTHD4Y_AARON</title>
 
-  <style>
+<style>
+body {
+    background: #000;
+    color: #33ff99;
+    font-family: "Courier New", monospace;
+    margin: 0;
+    min-height: 100vh;
+    overflow-x: auto;
+    overflow-y: auto;
+}
+
+#container {
+    position: relative;
+    padding: 20px;
+    box-sizing: border-box;
+    min-width: fit-content;
+}
+
+#screen {
+    text-shadow: 0 0 8px #00ff88;
+    white-space: pre;
+    line-height: 1.3em;
+    font-size: 14px;
+}
+
+/* Responsive font sizes */
+@media (max-width: 480px) {
     body {
-      background: #000;
-      color: #33ff99;
-      font-family: "Courier New", monospace;
-      margin: 0;
-      height: 100vh;
-      overflow: hidden;
+        font-size: 5px;
     }
-
     #container {
-      padding: 25px;
+        padding: 10px;
     }
-
     #screen {
-      text-shadow: 0 0 8px #00ff88;
-      white-space: pre-wrap;
-      line-height: 1.25em;
+        font-size: 5px;
+        line-height: 1.2em;
     }
+}
 
-    #cursor {
-      display: inline-block;
-      width: 10px;
-      height: 20px;
-      background: #33ff99;
-      margin-left: 3px;
-      animation: cursorBlink 0.6s infinite;
-      vertical-align: bottom;
+@media (min-width: 481px) and (max-width: 768px) {
+    #container {
+        padding: 15px;
     }
-
-    @keyframes cursorBlink {
-      0% { opacity: 1; }
-      50% { opacity: 0; }
-      100% { opacity: 1; }
+    #screen {
+        font-size: 8px;
+        line-height: 1.25em;
     }
+}
 
-    #crt {
-      position: absolute;
-      inset: 0;
-      background: repeating-linear-gradient(
+@media (min-width: 769px) and (max-width: 1024px) {
+    #screen {
+        font-size: 11px;
+    }
+}
+
+@media (min-width: 1025px) and (max-width: 1440px) {
+    #screen {
+        font-size: 14px;
+    }
+}
+
+@media (min-width: 1441px) {
+    #container {
+        padding: 30px;
+    }
+    #screen {
+        font-size: 16px;
+        line-height: 1.35em;
+    }
+}
+
+#cursor {
+    display: inline-block;
+    width: 10px;
+    height: 20px;
+    background: #33ff99;
+    margin-left: 3px;
+    animation: cursorBlink 0.6s infinite;
+    vertical-align: bottom;
+}
+
+@keyframes cursorBlink {
+    0% { opacity: 1; }
+    50% { opacity: 0; }
+    100% { opacity: 1; }
+}
+
+#crt {
+    position: fixed;
+    inset: 0;
+    background: repeating-linear-gradient(
         to bottom,
         rgba(0,0,0,0) 0px,
         rgba(0,0,0,0) 2px,
         rgba(0,0,0,0.15) 3px
-      );
-      mix-blend-mode: overlay;
-      pointer-events: none;
-      animation: flicker 0.15s infinite;
-    }
+    );
+    mix-blend-mode: overlay;
+    pointer-events: none;
+    animation: flicker 0.15s infinite;
+    z-index: 999;
+}
 
-    /* RESPONSIVE ASCII NON CENTRÉ */
-    #ascii-container {
-      width: 100%;
-      overflow: hidden; /* Pas de scroll horizontal */
-    }
-
-    .ascii-block {
-      white-space: pre;
-      line-height: 1.1em;
-      font-family: "Courier New", monospace;
-      display: inline-block;
-      transform-origin: left top; /* important pour garder l'alignement */
-    }
-  </style>
+@keyframes flicker {
+    0% { opacity: 0.2; }
+    50% { opacity: 0.4; }
+    100% { opacity: 0.25; }
+}
+</style>
 </head>
 
 <body>
-
 <div id="container">
-  <div id="screen"></div>
-
-  <div id="ascii-container">
-    <pre class="ascii-block" id="ascii-text"></pre>
-  </div>
-
-  <div id="cursor"></div>
+    <div id="screen"></div>
+    <div id="cursor"></div>
 </div>
-
 <div id="crt"></div>
 
 <audio id="bootSound" src="boot.wav"></audio>
 <audio id="beepSound" src="beep.wav"></audio>
 
 <script>
-  // ===============================
-  // ELEMENTS
-  // ===============================
-  const screen = document.getElementById("screen");
-  const asciiDiv = document.getElementById("ascii-text");
-  const bootSound = document.getElementById("bootSound");
-  const beepSound = document.getElementById("beepSound");
-
-  // ===============================
-  // BOOT
-  // ===============================
-  const bootLines = [
+// =============================================
+// BOOT TEXT
+// =============================================
+const bootLines = [
     "[BOOT] Initializing Ghostroot Engine v3.1.9...",
     "[OK] Scanning system for target: AARON",
     "[OK] Loading birthday protocol...",
@@ -110,101 +138,127 @@
     "[OK] Decrypting file: birthday_surprise.tar.gz",
     "[WARN] Massive happiness detected → ALLOW",
     "[OK] Starting birthday-terminal.service"
-  ];
+];
 
-  function playBoot() {
+const screen = document.getElementById("screen");
+const cursor = document.getElementById("cursor");
+
+const bootSound = document.getElementById("bootSound");
+const beepSound = document.getElementById("beepSound");
+
+function playBoot() {
     bootSound.currentTime = 0;
-    bootSound.play().catch(() => {});
-  }
+    bootSound.play().catch(()=>{});
+}
 
-  function playBeep() {
+function playBeep() {
     beepSound.currentTime = 0;
-    beepSound.play().catch(() => {});
-  }
+    beepSound.play().catch(()=>{});
+}
 
-  function typeLine(line, speed = 18) {
+function typeLine(line, speed = 18) {
     return new Promise(resolve => {
-      let i = 0;
-      function typing() {
-        if (i < line.length) {
-          screen.textContent += line[i];
-          playBeep();
-          i++;
-          setTimeout(typing, speed);
-        } else {
-          screen.textContent += "\n";
-          resolve();
+        let i = 0;
+        function typing() {
+            if (i < line.length) {
+                screen.textContent += line[i];
+                playBeep();
+                i++;
+                setTimeout(typing, speed);
+            } else {
+                screen.textContent += "\n";
+                resolve();
+            }
         }
-      }
-      typing();
+        typing();
     });
-  }
+}
 
-  // ===============================
-  // ASCII LETTERS
-  // ===============================
-  const H = ["██╗  ██╗","██║  ██║","███████║","██╔══██║","██║  ██║","╚═╝  ╚═╝"];
-  const A = ["█████╗ ","██╔══██╗","███████║","██╔══██║","██║  ██║","╚═╝  ╚═╝"];
-  const P = ["██████╗ ","██╔══██╗","██████╔╝","██╔═══╝ ","██║     ","╚═╝     "];
-  const Y = ["██╗   ██╗","╚██╗ ██╔╝"," ╚████╔╝ ","  ╚██╔╝  ","   ██║   ","   ╚═╝   "];
-  const B = ["██████╗ ","██╔══██╗","██████╔╝","██╔══██╗","██████╔╝","╚═════╝ "];
-  const I = ["██╗","██║","██║","██║","██║","╚═╝"];
-  const R = ["██████╗ ","██╔══██╗","██████╔╝","██╔══██╗","██║  ██║","╚═╝  ╚═╝"];
-  const T = ["████████╗","╚══██╔══╝","   ██║   ","   ██║   ","   ██║   ","   ╚═╝   "];
-  const D = ["██████╗ ","██╔══██╗","██║  ██║","██║  ██║","██████╔╝","╚═════╝ "];
+// =============================================
+// HAPPY BIRTHDAY ASCII LETTERS - RESPONSIVE
+// =============================================
+function getLettersMap() {
+    const width = window.innerWidth;
+    
+    // Version mobile ultra-compacte
+    if (width <= 480) {
+        return {
+            H: ["█ █","███","█ █"],
+            A: ["▄█▄","███","█ █"],
+            P: ["██▄","██ ","█  "],
+            Y: ["█ █"," █ "," █ "],
+            B: ["██▄","██▄","██▀"],
+            I: ["█","█","█"],
+            R: ["██▄","██ ","█ █"],
+            T: ["███"," █ "," █ "],
+            D: ["██▄","█ █","██▀"],
+            rows: 3
+        };
+    }
+    
+    // Version tablette compacte
+    if (width <= 768) {
+        return {
+            H: ["█╗ █╗","█████","█║ █║","═╝ ═╝"],
+            A: ["████╗","█████","█║ █║","═╝ ═╝"],
+            P: ["████╗","████╔","█╔═══","═╝   "],
+            Y: ["█╗ █╗","╚██╔╝"," ██║ "," ╚═╝ "],
+            B: ["████╗","████╔","████╔","════╝"],
+            I: ["█╗","█║","█║","═╝"],
+            R: ["████╗","████╔","█╔═██","═╝ ═╝"],
+            T: ["█████╗","══█╔═"," ═█║ "," ═╚═ "],
+            D: ["████╗","█║ █║","████╔","════╝"],
+            rows: 4
+        };
+    }
+    
+    // Version desktop complète (originale)
+    return {
+        H: ["██╗  ██╗","██║  ██║","███████║","██╔══██║","██║  ██║","╚═╝  ╚═╝"],
+        A: ["█████╗ ","██╔══██╗","███████║","██╔══██║","██║  ██║","╚═╝  ╚═╝"],
+        P: ["██████╗ ","██╔══██╗","██████╔╝","██╔═══╝ ","██║     ","╚═╝     "],
+        Y: ["██╗   ██╗","╚██╗ ██╔╝"," ╚████╔╝ ","  ╚██╔╝  ","   ██║   ","   ╚═╝   "],
+        B: ["██████╗ ","██╔══██╗","██████╔╝","██╔══██╗","██████╔╝","╚═════╝ "],
+        I: ["██╗","██║","██║","██║","██║","╚═╝"],
+        R: ["██████╗ ","██╔══██╗","██████╔╝","██╔══██╗","██║  ██║","╚═╝  ╚═╝"],
+        T: ["████████╗","╚══██╔══╝","   ██║   ","   ██║   ","   ██║   ","   ╚═╝   "],
+        D: ["██████╗ ","██╔══██╗","██║  ██║","██║  ██║","██████╔╝","╚═════╝ "],
+        rows: 6
+    };
+}
 
-  const lettersMap = { H,A,P,Y,B,I,R,T,D };
-  const word = "HAPPYBIRTHDAY";
+const word = "HAPPYBIRTHDAY";
 
-  function assembleWord(word) {
-    const lines = ["","","","","",""];
+function assembleWord(word) {
+    const lettersMap = getLettersMap();
+    const rows = lettersMap.rows;
+    const lines = Array(rows).fill("");
+    
     for (const char of word) {
-      const letter = lettersMap[char];
-      for (let i = 0; i < 6; i++) {
-        lines[i] += letter[i] + "  ";
-      }
+        const letter = lettersMap[char];
+        for (let i = 0; i < rows; i++) {
+            lines[i] += letter[i] + " ";
+        }
     }
     return lines;
-  }
+}
 
-  // ===============================
-  // RESPONSIVE AUTO-SCALE
-  // ===============================
-  function resizeAscii() {
-    const containerWidth = document.getElementById("ascii-container").offsetWidth;
-    const asciiWidth = asciiDiv.scrollWidth;
-
-    let scale = containerWidth / asciiWidth;
-    if (scale > 1) scale = 1; // jamais agrandir
-
-    asciiDiv.style.transform = `scale(${scale})`;
-  }
-
-  window.addEventListener("resize", resizeAscii);
-
-  // ===============================
-  // TYPE ASCII WITH ANIMATION
-  // ===============================
-  async function typeAscii() {
+async function typeAscii() {
     const lines = assembleWord(word);
-    asciiDiv.textContent = ""; // reset
-
-    for (let i = 0; i < 6; i++) {
-      for (let j = 0; j < lines[i].length; j++) {
-        asciiDiv.textContent += lines[i][j];
-        playBeep();
-        await new Promise(r => setTimeout(r, 4));
-      }
-      asciiDiv.textContent += "\n";
+    for (let i = 0; i < lines.length; i++) {
+        for (let j = 0; j < lines[i].length; j++) {
+            screen.textContent += lines[i][j];
+            playBeep();
+            await new Promise(r => setTimeout(r, 8));
+        }
+        screen.textContent += "\n";
     }
+}
 
-    resizeAscii(); // auto-resize AFTER generation
-  }
-
-  // ===============================
-  // MAIN MESSAGE
-  // ===============================
-  const mainMessage = `
+// =============================================
+// MAIN MESSAGE
+// =============================================
+const mainMessage = `
 >>> HAPPY BIRTHDAY, AARON — Powered by GHOSTROOT <<<
 
 Executing birthday_payload.sh...
@@ -218,26 +272,25 @@ Message :
 "Que cette année soit exploitée à 100% sans bugs et sans crash."
 `;
 
-  async function typeMain() {
+async function typeMain() {
     for (const char of mainMessage) {
-      screen.textContent += char;
-      playBeep();
-      await new Promise(r => setTimeout(r, 8));
+        screen.textContent += char;
+        playBeep();
+        await new Promise(r => setTimeout(r, 8));
     }
-  }
+}
 
-  // ===============================
-  // FLOW
-  // ===============================
-  async function start() {
+// =============================================
+// FLOW
+// =============================================
+async function start() {
     playBoot();
 
     for (const line of bootLines) {
-      await typeLine(line, 10);
+        await typeLine(line, 10);
     }
 
     screen.textContent += "\n[OK] Launching birthday payload...\n\n";
-
     await new Promise(r => setTimeout(r, 500));
 
     await typeAscii();
@@ -245,9 +298,9 @@ Message :
     screen.textContent += "\n\n";
 
     await typeMain();
-  }
+}
 
-  start();
+start();
 </script>
 
 </body>
