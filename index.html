@@ -11,67 +11,19 @@ body {
     color: #33ff99;
     font-family: "Courier New", monospace;
     margin: 0;
-    min-height: 100vh;
-    overflow: auto;
+    height: 100vh;
+    overflow: hidden;
 }
 
 #container {
     position: relative;
-    padding: 20px;
-    max-width: 100%;
-    box-sizing: border-box;
+    padding: 25px;
 }
 
 #screen {
     text-shadow: 0 0 8px #00ff88;
     white-space: pre-wrap;
     line-height: 1.25em;
-    font-size: 14px;
-    word-break: break-word;
-    overflow-wrap: break-word;
-}
-
-/* Responsive font sizes */
-@media (max-width: 480px) {
-    #screen {
-        font-size: 6px;
-        line-height: 1.1em;
-    }
-    #container {
-        padding: 10px;
-    }
-}
-
-@media (min-width: 481px) and (max-width: 768px) {
-    #screen {
-        font-size: 9px;
-        line-height: 1.15em;
-    }
-    #container {
-        padding: 15px;
-    }
-}
-
-@media (min-width: 769px) and (max-width: 1024px) {
-    #screen {
-        font-size: 12px;
-        line-height: 1.2em;
-    }
-}
-
-@media (min-width: 1025px) and (max-width: 1440px) {
-    #screen {
-        font-size: 14px;
-    }
-}
-
-@media (min-width: 1441px) {
-    #screen {
-        font-size: 16px;
-    }
-    #container {
-        padding: 30px;
-    }
 }
 
 #cursor {
@@ -91,7 +43,7 @@ body {
 }
 
 #crt {
-    position: fixed;
+    position: absolute;
     inset: 0;
     background: repeating-linear-gradient(
         to bottom,
@@ -172,68 +124,27 @@ function typeLine(line, speed = 18) {
 }
 
 // =============================================
-// HAPPY BIRTHDAY ASCII LETTERS - RESPONSIVE
+// HAPPY BIRTHDAY ASCII LETTERS
 // =============================================
-function getResponsiveLetters() {
-    const width = window.innerWidth;
-    
-    // Version mobile compacte (≤480px)
-    if (width <= 480) {
-        return {
-            H: ["█ █","███","█ █"],
-            A: ["▄█▄","███","█ █"],
-            P: ["██▄","██ ","█  "],
-            Y: ["█ █"," █ "," █ "],
-            B: ["██▄","██▄","██▀"],
-            I: ["█","█","█"],
-            R: ["██▄","██ ","█ █"],
-            T: ["███"," █ "," █ "],
-            D: ["██▄","█ █","██▀"],
-            rows: 3
-        };
-    }
-    
-    // Version tablette (481-768px)
-    if (width <= 768) {
-        return {
-            H: ["█╗ █╗","█████","█║ █║","═╝ ═╝"],
-            A: ["████╗","█████","█║ █║","═╝ ═╝"],
-            P: ["████╗","████╔","█╔═══","═╝   "],
-            Y: ["█╗ █╗","╚██╔╝"," ██║ "," ╚═╝ "],
-            B: ["████╗","████╔","████╔","════╝"],
-            I: ["█╗","█║","█║","═╝"],
-            R: ["████╗","████╔","█╔═██","═╝ ═╝"],
-            T: ["█████╗","══█╔═"," ═█║ "," ═╚═ "],
-            D: ["████╗","█║ █║","████╔","════╝"],
-            rows: 4
-        };
-    }
-    
-    // Version desktop complète (>768px)
-    return {
-        H: ["██╗  ██╗","██║  ██║","███████║","██╔══██║","██║  ██║","╚═╝  ╚═╝"],
-        A: ["█████╗ ","██╔══██╗","███████║","██╔══██║","██║  ██║","╚═╝  ╚═╝"],
-        P: ["██████╗ ","██╔══██╗","██████╔╝","██╔═══╝ ","██║     ","╚═╝     "],
-        Y: ["██╗   ██╗","╚██╗ ██╔╝"," ╚████╔╝ ","  ╚██╔╝  ","   ██║   ","   ╚═╝   "],
-        B: ["██████╗ ","██╔══██╗","██████╔╝","██╔══██╗","██████╔╝","╚═════╝ "],
-        I: ["██╗","██║","██║","██║","██║","╚═╝"],
-        R: ["██████╗ ","██╔══██╗","██████╔╝","██╔══██╗","██║  ██║","╚═╝  ╚═╝"],
-        T: ["████████╗","╚══██╔══╝","   ██║   ","   ██║   ","   ██║   ","   ╚═╝   "],
-        D: ["██████╗ ","██╔══██╗","██║  ██║","██║  ██║","██████╔╝","╚═════╝ "],
-        rows: 6
-    };
-}
+const H = ["██╗  ██╗","██║  ██║","███████║","██╔══██║","██║  ██║","╚═╝  ╚═╝"];
+const A = ["█████╗ ","██╔══██╗","███████║","██╔══██║","██║  ██║","╚═╝  ╚═╝"];
+const P = ["██████╗ ","██╔══██╗","██████╔╝","██╔═══╝ ","██║     ","╚═╝     "];
+const Y = ["██╗   ██╗","╚██╗ ██╔╝"," ╚████╔╝ ","  ╚██╔╝  ","   ██║   ","   ╚═╝   "];
+const B = ["██████╗ ","██╔══██╗","██████╔╝","██╔══██╗","██████╔╝","╚═════╝ "];
+const I = ["██╗","██║","██║","██║","██║","╚═╝"];
+const R = ["██████╗ ","██╔══██╗","██████╔╝","██╔══██╗","██║  ██║","╚═╝  ╚═╝"];
+const T = ["████████╗","╚══██╔══╝","   ██║   ","   ██║   ","   ██║   ","   ╚═╝   "];
+const D = ["██████╗ ","██╔══██╗","██║  ██║","██║  ██║","██████╔╝","╚═════╝ "];
+
+const lettersMap = {H,A,P,Y,B,I,R,T,D};
 
 const word = "HAPPYBIRTHDAY";
 
 function assembleWord(word) {
-    const lettersMap = getResponsiveLetters();
-    const rows = lettersMap.rows;
-    const lines = Array(rows).fill("");
-    
+    const lines = ["","","","","",""];
     for (const char of word) {
         const letter = lettersMap[char];
-        for (let i = 0; i < rows; i++) {
+        for (let i = 0; i < 6; i++) {
             lines[i] += letter[i] + "  ";
         }
     }
@@ -242,7 +153,7 @@ function assembleWord(word) {
 
 async function typeAscii() {
     const lines = assembleWord(word);
-    for (let i = 0; i < lines.length; i++) {
+    for (let i = 0; i < 6; i++) {
         for (let j = 0; j < lines[i].length; j++) {
             screen.textContent += lines[i][j];
             playBeep();
