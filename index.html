@@ -3,36 +3,48 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>H4CKED_B1RTHD4Y_AARON</title>
+<title>H4CKED_B1RTHD4Y_AARON — Mobile First</title>
 
 <style>
+/* LAYOUT MOBILE-FIRST */
 body {
     background: #000;
     color: #33ff99;
     font-family: "Courier New", monospace;
     margin: 0;
+    padding: 0;
     height: 100vh;
     overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
 }
 
 #container {
-    position: relative;
-    padding: 25px;
+    width: 100%;
+    height: 100%;
+    padding: 12px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
 }
 
 #screen {
-    text-shadow: 0 0 8px #00ff88;
+    text-shadow: 0 0 6px #00ff88;
     white-space: pre-wrap;
-    line-height: 1.25em;
+    line-height: 1.2em;
+    font-size: 3.2vw;
+    flex-grow: 1;
+    overflow-y: auto;
 }
 
 /* CURSEUR */
 #cursor {
     display: inline-block;
-    width: 10px;
-    height: 20px;
+    width: 6px;
+    height: 14px;
     background: #33ff99;
-    margin-left: 3px;
+    margin-left: 2px;
     animation: cursorBlink 0.6s infinite;
     vertical-align: bottom;
 }
@@ -45,13 +57,13 @@ body {
 
 /* EFFET CRT */
 #crt {
-    position: absolute;
+    position: fixed;
     inset: 0;
     background: repeating-linear-gradient(
         to bottom,
         rgba(0,0,0,0) 0px,
         rgba(0,0,0,0) 2px,
-        rgba(0,0,0,0.15) 3px
+        rgba(0,255,100,0.08) 3px
     );
     mix-blend-mode: overlay;
     pointer-events: none;
@@ -59,20 +71,27 @@ body {
 }
 
 @keyframes flicker {
-    0% { opacity: 0.2; }
-    50% { opacity: 0.4; }
-    100% { opacity: 0.25; }
+    0% { opacity: 0.15; }
+    50% { opacity: 0.3; }
+    100% { opacity: 0.2; }
 }
 
-/* ASCII ULTRA-RESPONSIVE */
+/* ASCII ULTRA RESPONSIVE */
 .ascii-block {
-    white-space: pre;              /* pas de retour à la ligne */
-    overflow-x: auto;              /* scroll si écran trop petit */
+    white-space: pre;
+    overflow-x: auto;
     display: block;
     font-family: "Courier New", monospace;
-    font-size: clamp(8px, 2.2vw, 20px);  /* auto-adaptatif */
+    font-size: clamp(10px, 4vw, 22px);
     line-height: 1.05em;
-    padding: 10px 0;
+    padding: 8px 0;
+}
+
+/* BONUS: pour écrans > 768px */
+@media (min-width: 768px) {
+    #screen {
+        font-size: 1.5vw;
+    }
 }
 </style>
 </head>
@@ -88,9 +107,6 @@ body {
 <audio id="beepSound" src="beep.wav"></audio>
 
 <script>
-// =============================================
-// BOOT TEXT
-// =============================================
 const bootLines = [
     "[BOOT] Initializing Ghostroot Engine v3.1.9...",
     "[OK] Scanning system for target: AARON",
@@ -104,7 +120,6 @@ const bootLines = [
 
 const screen = document.getElementById("screen");
 const cursor = document.getElementById("cursor");
-
 const bootSound = document.getElementById("bootSound");
 const beepSound = document.getElementById("beepSound");
 
@@ -136,9 +151,7 @@ function typeLine(line, speed = 18) {
     });
 }
 
-// =============================================
-// ASCII LETTERS
-// =============================================
+/* ASCII */
 const H = ["██╗  ██╗","██║  ██║","███████║","██╔══██║","██║  ██║","╚═╝  ╚═╝"];
 const A = ["█████╗ ","██╔══██╗","███████║","██╔══██║","██║  ██║","╚═╝  ╚═╝"];
 const P = ["██████╗ ","██╔══██╗","██████╔╝","██╔═══╝ ","██║     ","╚═╝     "];
@@ -150,7 +163,6 @@ const T = ["████████╗","╚══██╔══╝","   █�
 const D = ["██████╗ ","██╔══██╗","██║  ██║","██║  ██║","██████╔╝","╚═════╝ "];
 
 const lettersMap = {H,A,P,Y,B,I,R,T,D};
-
 const word = "HAPPYBIRTHDAY";
 
 function assembleWord(word) {
@@ -175,15 +187,12 @@ async function typeAscii() {
         for (let j = 0; j < lines[i].length; j++) {
             asciiContainer.textContent += lines[i][j];
             playBeep();
-            await new Promise(r => setTimeout(r, 8));
+            await new Promise(r => setTimeout(r, 6));
         }
         asciiContainer.textContent += "\n";
     }
 }
 
-// =============================================
-// MAIN MESSAGE
-// =============================================
 const mainMessage = `
 >>> HAPPY BIRTHDAY, AARON — Powered by GHOSTROOT <<<
 
@@ -206,18 +215,15 @@ async function typeMain() {
     }
 }
 
-// =============================================
-// FLOW
-// =============================================
 async function start() {
     playBoot();
 
     for (const line of bootLines) {
-        await typeLine(line, 10);
+        await typeLine(line, 12);
     }
 
     screen.textContent += "\n[OK] Launching birthday payload...\n\n";
-    await new Promise(r => setTimeout(r, 500));
+    await new Promise(r => setTimeout(r, 400));
 
     await typeAscii();
 
