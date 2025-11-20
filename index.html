@@ -11,34 +11,67 @@ body {
     color: #33ff99;
     font-family: "Courier New", monospace;
     margin: 0;
-    height: 100vh;
-    overflow: hidden;
+    min-height: 100vh;
+    overflow: auto;
 }
 
 #container {
     position: relative;
-    padding: 25px;
+    padding: 20px;
+    max-width: 100%;
+    box-sizing: border-box;
 }
 
 #screen {
     text-shadow: 0 0 8px #00ff88;
     white-space: pre-wrap;
     line-height: 1.25em;
+    font-size: 14px;
+    word-break: break-word;
+    overflow-wrap: break-word;
 }
 
-#neonText {
-    font-size: 3em;
-    font-weight: bold;
-    text-align: center;
-    color: #33ff99;
-    text-shadow:
-        0 0 5px #33ff99,
-        0 0 10px #33ff99,
-        0 0 20px #33ff99,
-        0 0 40px #33ff99,
-        0 0 80px #33ff99;
-    display: block;
-    margin-bottom: 20px;
+/* Responsive font sizes */
+@media (max-width: 480px) {
+    #screen {
+        font-size: 6px;
+        line-height: 1.1em;
+    }
+    #container {
+        padding: 10px;
+    }
+}
+
+@media (min-width: 481px) and (max-width: 768px) {
+    #screen {
+        font-size: 9px;
+        line-height: 1.15em;
+    }
+    #container {
+        padding: 15px;
+    }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+    #screen {
+        font-size: 12px;
+        line-height: 1.2em;
+    }
+}
+
+@media (min-width: 1025px) and (max-width: 1440px) {
+    #screen {
+        font-size: 14px;
+    }
+}
+
+@media (min-width: 1441px) {
+    #screen {
+        font-size: 16px;
+    }
+    #container {
+        padding: 30px;
+    }
 }
 
 #cursor {
@@ -52,12 +85,13 @@ body {
 }
 
 @keyframes cursorBlink {
-    0%,100% { opacity: 1; }
+    0% { opacity: 1; }
     50% { opacity: 0; }
+    100% { opacity: 1; }
 }
 
 #crt {
-    position: absolute;
+    position: fixed;
     inset: 0;
     background: repeating-linear-gradient(
         to bottom,
@@ -80,9 +114,7 @@ body {
 
 <body>
 <div id="container">
-    <div id="screen">
-        <span id="neonText">HAPPY BIRTHDAY, AARON</span>
-    </div>
+    <div id="screen"></div>
     <div id="cursor"></div>
 </div>
 <div id="crt"></div>
@@ -111,20 +143,113 @@ const cursor = document.getElementById("cursor");
 const bootSound = document.getElementById("bootSound");
 const beepSound = document.getElementById("beepSound");
 
-function playBoot() { bootSound.currentTime = 0; bootSound.play().catch(()=>{}); }
-function playBeep() { beepSound.currentTime = 0; beepSound.play().catch(()=>{}); }
+function playBoot() {
+    bootSound.currentTime = 0;
+    bootSound.play().catch(()=>{});
+}
 
-function typeLine(line,speed=18){
-    return new Promise(resolve=>{
-        let i=0;
-        function typing(){
-            if(i<line.length){
-                screen.textContent+=line[i]; playBeep(); i++;
-                setTimeout(typing,speed);
-            } else { screen.textContent+="\n"; resolve(); }
+function playBeep() {
+    beepSound.currentTime = 0;
+    beepSound.play().catch(()=>{});
+}
+
+function typeLine(line, speed = 18) {
+    return new Promise(resolve => {
+        let i = 0;
+        function typing() {
+            if (i < line.length) {
+                screen.textContent += line[i];
+                playBeep();
+                i++;
+                setTimeout(typing, speed);
+            } else {
+                screen.textContent += "\n";
+                resolve();
+            }
         }
         typing();
     });
+}
+
+// =============================================
+// HAPPY BIRTHDAY ASCII LETTERS - RESPONSIVE
+// =============================================
+function getResponsiveLetters() {
+    const width = window.innerWidth;
+    
+    // Version mobile compacte (≤480px)
+    if (width <= 480) {
+        return {
+            H: ["█ █","███","█ █"],
+            A: ["▄█▄","███","█ █"],
+            P: ["██▄","██ ","█  "],
+            Y: ["█ █"," █ "," █ "],
+            B: ["██▄","██▄","██▀"],
+            I: ["█","█","█"],
+            R: ["██▄","██ ","█ █"],
+            T: ["███"," █ "," █ "],
+            D: ["██▄","█ █","██▀"],
+            rows: 3
+        };
+    }
+    
+    // Version tablette (481-768px)
+    if (width <= 768) {
+        return {
+            H: ["█╗ █╗","█████","█║ █║","═╝ ═╝"],
+            A: ["████╗","█████","█║ █║","═╝ ═╝"],
+            P: ["████╗","████╔","█╔═══","═╝   "],
+            Y: ["█╗ █╗","╚██╔╝"," ██║ "," ╚═╝ "],
+            B: ["████╗","████╔","████╔","════╝"],
+            I: ["█╗","█║","█║","═╝"],
+            R: ["████╗","████╔","█╔═██","═╝ ═╝"],
+            T: ["█████╗","══█╔═"," ═█║ "," ═╚═ "],
+            D: ["████╗","█║ █║","████╔","════╝"],
+            rows: 4
+        };
+    }
+    
+    // Version desktop complète (>768px)
+    return {
+        H: ["██╗  ██╗","██║  ██║","███████║","██╔══██║","██║  ██║","╚═╝  ╚═╝"],
+        A: ["█████╗ ","██╔══██╗","███████║","██╔══██║","██║  ██║","╚═╝  ╚═╝"],
+        P: ["██████╗ ","██╔══██╗","██████╔╝","██╔═══╝ ","██║     ","╚═╝     "],
+        Y: ["██╗   ██╗","╚██╗ ██╔╝"," ╚████╔╝ ","  ╚██╔╝  ","   ██║   ","   ╚═╝   "],
+        B: ["██████╗ ","██╔══██╗","██████╔╝","██╔══██╗","██████╔╝","╚═════╝ "],
+        I: ["██╗","██║","██║","██║","██║","╚═╝"],
+        R: ["██████╗ ","██╔══██╗","██████╔╝","██╔══██╗","██║  ██║","╚═╝  ╚═╝"],
+        T: ["████████╗","╚══██╔══╝","   ██║   ","   ██║   ","   ██║   ","   ╚═╝   "],
+        D: ["██████╗ ","██╔══██╗","██║  ██║","██║  ██║","██████╔╝","╚═════╝ "],
+        rows: 6
+    };
+}
+
+const word = "HAPPYBIRTHDAY";
+
+function assembleWord(word) {
+    const lettersMap = getResponsiveLetters();
+    const rows = lettersMap.rows;
+    const lines = Array(rows).fill("");
+    
+    for (const char of word) {
+        const letter = lettersMap[char];
+        for (let i = 0; i < rows; i++) {
+            lines[i] += letter[i] + "  ";
+        }
+    }
+    return lines;
+}
+
+async function typeAscii() {
+    const lines = assembleWord(word);
+    for (let i = 0; i < lines.length; i++) {
+        for (let j = 0; j < lines[i].length; j++) {
+            screen.textContent += lines[i][j];
+            playBeep();
+            await new Promise(r => setTimeout(r, 8));
+        }
+        screen.textContent += "\n";
+    }
 }
 
 // =============================================
@@ -144,11 +269,11 @@ Message :
 "Que cette année soit exploitée à 100% sans bugs et sans crash."
 `;
 
-async function typeMain(){
-    for(const char of mainMessage){
-        screen.textContent+=char;
+async function typeMain() {
+    for (const char of mainMessage) {
+        screen.textContent += char;
         playBeep();
-        await new Promise(r=>setTimeout(r,8));
+        await new Promise(r => setTimeout(r, 8));
     }
 }
 
@@ -158,18 +283,22 @@ async function typeMain(){
 async function start() {
     playBoot();
 
-    for(const line of bootLines){
-        await typeLine(line,10);
+    for (const line of bootLines) {
+        await typeLine(line, 10);
     }
 
-    screen.textContent+="\n[OK] Launching birthday payload...\n\n";
+    screen.textContent += "\n[OK] Launching birthday payload...\n\n";
+    await new Promise(r => setTimeout(r, 500));
 
-    // Le texte neon est déjà affiché, on peut ajouter un effet si besoin
+    await typeAscii();
+
+    screen.textContent += "\n\n";
 
     await typeMain();
 }
 
 start();
 </script>
+
 </body>
 </html>
