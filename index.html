@@ -22,8 +22,23 @@ body {
 
 #screen {
     text-shadow: 0 0 8px #00ff88;
-    white-space: pre;
+    white-space: pre-wrap;
     line-height: 1.25em;
+}
+
+#neonText {
+    font-size: 3em;
+    font-weight: bold;
+    text-align: center;
+    color: #33ff99;
+    text-shadow:
+        0 0 5px #33ff99,
+        0 0 10px #33ff99,
+        0 0 20px #33ff99,
+        0 0 40px #33ff99,
+        0 0 80px #33ff99;
+    display: block;
+    margin-bottom: 20px;
 }
 
 #cursor {
@@ -37,9 +52,8 @@ body {
 }
 
 @keyframes cursorBlink {
-    0% { opacity: 1; }
+    0%,100% { opacity: 1; }
     50% { opacity: 0; }
-    100% { opacity: 1; }
 }
 
 #crt {
@@ -66,7 +80,9 @@ body {
 
 <body>
 <div id="container">
-    <div id="screen"></div>
+    <div id="screen">
+        <span id="neonText">HAPPY BIRTHDAY, AARON</span>
+    </div>
     <div id="cursor"></div>
 </div>
 <div id="crt"></div>
@@ -91,105 +107,24 @@ const bootLines = [
 
 const screen = document.getElementById("screen");
 const cursor = document.getElementById("cursor");
+
 const bootSound = document.getElementById("bootSound");
 const beepSound = document.getElementById("beepSound");
 
-function playBoot(){ bootSound.currentTime=0; bootSound.play().catch(()=>{}); }
-function playBeep(){ beepSound.currentTime=0; beepSound.play().catch(()=>{}); }
+function playBoot() { bootSound.currentTime = 0; bootSound.play().catch(()=>{}); }
+function playBeep() { beepSound.currentTime = 0; beepSound.play().catch(()=>{}); }
 
-function typeLine(line, speed = 18) {
-    return new Promise(resolve => {
-        let i = 0;
-        function typing() {
-            if (i < line.length) {
-                screen.textContent += line[i];
-                playBeep();
-                i++;
-                setTimeout(typing, speed);
-            } else {
-                screen.textContent += "\n";
-                resolve();
-            }
+function typeLine(line,speed=18){
+    return new Promise(resolve=>{
+        let i=0;
+        function typing(){
+            if(i<line.length){
+                screen.textContent+=line[i]; playBeep(); i++;
+                setTimeout(typing,speed);
+            } else { screen.textContent+="\n"; resolve(); }
         }
         typing();
     });
-}
-
-// =============================================
-// RESPONSIVE ASCII LETTERS
-// =============================================
-function getResponsiveLetters() {
-    const width = window.innerWidth;
-
-    if(width <= 480){ // mobile
-        return {
-            H: ["█ █","███","█ █"],
-            A: ["▄█▄","███","█ █"],
-            P: ["██▄","██ ","█  "],
-            Y: ["█ █"," █ "," █ "],
-            B: ["██▄","██▄","██▀"],
-            I: ["█","█","█"],
-            R: ["██▄","██ ","█ █"],
-            T: ["███"," █ "," █ "],
-            D: ["██▄","█ █","██▀"],
-            rows: 3
-        };
-    }
-
-    if(width <= 768){ // tablette
-        return {
-            H: ["██╗ ██╗","█████","██║ ██║","╚═╝ ╚═╝"],
-            A: ["████╗","█████","█ ║ █","╚═╝ ╚═╝"],
-            P: ["████╗","████╔","█╔═ ","╚═   "],
-            Y: ["██╗ ██╗","╚██╔╝"," ██║ "," ╚═╝ "],
-            B: ["████╗","████╔","████╔","════╝"],
-            I: ["██","██","██","═╝"],
-            R: ["████╗","████╔","█╔═██","═╝ ═╝"],
-            T: ["█████","══█╔═"," ═█║ "," ═╚═ "],
-            D: ["████╗","█║ █║","████╔","════╝"],
-            rows: 4
-        };
-    }
-
-    // desktop
-    return {
-        H: ["██╗  ██╗","██║  ██║","███████║","██╔══██║","██║  ██║","╚═╝  ╚═╝"],
-        A: ["█████╗ ","██╔══██╗","███████║","██╔══██║","██║  ██║","╚═╝  ╚═╝"],
-        P: ["██████╗ ","██╔══██╗","██████╔╝","██╔═══╝ ","██║     ","╚═╝     "],
-        Y: ["██╗   ██╗","╚██╗ ██╔╝"," ╚████╔╝ ","  ╚██╔╝  ","   ██║   ","   ╚═╝   "],
-        B: ["██████╗ ","██╔══██╗","██████╔╝","██╔══██╗","██████╔╝","╚═════╝ "],
-        I: ["██╗","██║","██║","██║","██║","╚═╝"],
-        R: ["██████╗ ","██╔══██╗","██████╔╝","██╔══██╗","██║  ██║","╚═╝  ╚═╝"],
-        T: ["████████╗","╚══██╔══╝","   ██║   ","   ██║   ","   ██║   ","   ╚═╝   "],
-        D: ["██████╗ ","██╔══██╗","██║  ██║","██║  ██║","██████╔╝","╚═════╝ "],
-        rows: 6
-    };
-}
-
-const word = "HAPPYBIRTHDAY";
-
-function assembleWord(word){
-    const lettersMap = getResponsiveLetters();
-    const rows = lettersMap.rows;
-    const lines = Array(rows).fill("");
-
-    for(const char of word){
-        const letter = lettersMap[char];
-        for(let i=0;i<rows;i++){
-            lines[i]+=letter[i]+"  ";
-        }
-    }
-    return lines;
-}
-
-// Optimized typing of ASCII only
-async function typeAsciiOptimized(){
-    const lines = assembleWord(word);
-    for(let i=0;i<lines.length;i++){
-        screen.textContent += lines[i] + "\n";
-        playBeep();
-        await new Promise(r=>setTimeout(r,8));
-    }
 }
 
 // =============================================
@@ -209,7 +144,7 @@ Message :
 "Que cette année soit exploitée à 100% sans bugs et sans crash."
 `;
 
-async function typeMain() {
+async function typeMain(){
     for(const char of mainMessage){
         screen.textContent+=char;
         playBeep();
@@ -220,26 +155,19 @@ async function typeMain() {
 // =============================================
 // FLOW
 // =============================================
-async function start(){
+async function start() {
     playBoot();
-    for(const line of bootLines){ await typeLine(line,10); }
+
+    for(const line of bootLines){
+        await typeLine(line,10);
+    }
+
     screen.textContent+="\n[OK] Launching birthday payload...\n\n";
-    await new Promise(r=>setTimeout(r,500));
-    await typeAsciiOptimized();
-    screen.textContent+="\n\n";
+
+    // Le texte neon est déjà affiché, on peut ajouter un effet si besoin
+
     await typeMain();
 }
-
-// Recalculate ASCII only on resize
-window.addEventListener("resize", async ()=>{
-    const linesBefore = screen.textContent.split("\n");
-    // Find index of ASCII start: after bootLines + "[OK] Launching birthday payload..."
-    const asciiStart = bootLines.length + 1;
-    // Preserve boot + message before ASCII
-    const preserved = linesBefore.slice(0, asciiStart).join("\n") + "\n\n";
-    screen.textContent = preserved;
-    await typeAsciiOptimized();
-});
 
 start();
 </script>
