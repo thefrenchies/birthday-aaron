@@ -26,19 +26,23 @@ body {
     line-height: 1.25em;
 }
 
-#ascii-art {
+#screen .ascii-art {
+    display: block;
+    white-space: pre;
     font-size: 12px;
 }
 
 @media (max-width: 600px) {
-    #ascii-art {
-        font-size: 7px;
+    #screen .ascii-art {
+        font-size: 6px;
+        line-height: 1.1em;
     }
 }
 
 @media (max-width: 400px) {
-    #ascii-art {
-        font-size: 5px;
+    #screen .ascii-art {
+        font-size: 4.5px;
+        line-height: 1.1em;
     }
 }
 
@@ -168,23 +172,23 @@ function assembleWord(word) {
 }
 
 async function typeAscii() {
-    // Create a span with special styling for ASCII art
-    const asciiSpan = document.createElement('span');
-    asciiSpan.id = 'ascii-art';
-    screen.appendChild(asciiSpan);
-    
     const lines = assembleWord(word);
+    let asciiText = "";
     for (let i = 0; i < 6; i++) {
-        for (let j = 0; j < lines[i].length; j++) {
-            asciiSpan.textContent += lines[i][j];
-            playBeep();
-            await new Promise(r => setTimeout(r, 8));
-        }
-        asciiSpan.textContent += "\n";
+        asciiText += lines[i] + "\n";
     }
     
-    // Continue with normal text after ASCII art
-    screen.appendChild(document.createTextNode(""));
+    // Wrap in span with class
+    const span = document.createElement('span');
+    span.className = 'ascii-art';
+    
+    for (let i = 0; i < asciiText.length; i++) {
+        span.textContent += asciiText[i];
+        playBeep();
+        await new Promise(r => setTimeout(r, 8));
+    }
+    
+    screen.appendChild(span);
 }
 
 // =============================================
@@ -206,7 +210,7 @@ Message :
 
 async function typeMain() {
     for (const char of mainMessage) {
-        screen.appendChild(document.createTextNode(char));
+        screen.textContent += char;
         playBeep();
         await new Promise(r => setTimeout(r, 8));
     }
