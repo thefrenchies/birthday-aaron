@@ -108,7 +108,443 @@ body {
 <script>
 const bootLines = [
     "[BOOT] Initializing Ghostroot Engine v3.1.9...",
+    "[OK] Scanning system for target: AARON"
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>H4CKED_B1RTHD4Y_AARON</title>
+
+<style>
+body {
+    background: #000;
+    color: #33ff99;
+    font-family: "Courier New", monospace;
+    margin: 0;
+    height: 100vh;
+    overflow: hidden;
+}
+
+#container {
+    position: relative;
+    padding: 25px;
+}
+
+#screen {
+    text-shadow: 0 0 8px #00ff88;
+    white-space: pre-wrap;
+    line-height: 1.25em;
+}
+
+#cursor {
+    display: inline-block;
+    width: 10px;
+    height: 20px;
+    background: #33ff99;
+    margin-left: 3px;
+    animation: cursorBlink 0.6s infinite;
+    vertical-align: bottom;
+}
+
+@keyframes cursorBlink {
+    0% { opacity: 1; }
+    50% { opacity: 0; }
+    100% { opacity: 1; }
+}
+
+#crt {
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+        to bottom,
+        rgba(0,0,0,0) 0px,
+        rgba(0,0,0,0) 2px,
+        rgba(0,0,0,0.15) 3px
+    );
+    mix-blend-mode: overlay;
+    pointer-events: none;
+    animation: flicker 0.15s infinite;
+}
+
+@keyframes flicker {
+    0% { opacity: 0.2; }
+    50% { opacity: 0.4; }
+    100% { opacity: 0.25; }
+}
+
+/* ---- EFFET NEON ---- */
+.neon {
+    color: #33ff99;
+    font-size: 1.4em; /* taille optimisée */
+    text-shadow:
+        0 0 4px #33ff99,
+        0 0 8px #33ff99,
+        0 0 16px #00ff77,
+        0 0 32px #00ff55,
+        0 0 64px #00ff33;
+    animation: neonPulse 1.6s ease-in-out infinite;
+}
+
+@keyframes neonPulse {
+    0%, 100% {
+        text-shadow:
+            0 0 4px #33ff99,
+            0 0 8px #33ff99,
+            0 0 16px #00ff77,
+            0 0 32px #00ff55;
+        opacity: 1;
+    }
+    50% {
+        text-shadow:
+            0 0 2px #33ff99,
+            0 0 6px #00ff77,
+            0 0 12px #00ff55;
+        opacity: 0.7;
+    }
+}
+</style>
+</head>
+
+<body>
+<div id="container">
+    <div id="screen"></div>
+    <div id="cursor"></div>
+</div>
+<div id="crt"></div>
+
+<audio id="bootSound" src="boot.wav"></audio>
+<audio id="beepSound" src="beep.wav"></audio>
+
+<script>
+const bootLines = [
+    "[BOOT] Initializing Ghostroot Engine v3.1.9...",
     "[OK] Scanning system for target: AARON",
+    
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>H4CKED_B1RTHD4Y_AARON</title>
+
+<style>
+body {
+    background: #000;
+    color: #33ff99;
+    font-family: "Courier New", monospace;
+    margin: 0;
+    height: 100vh;
+    overflow: hidden;
+}
+
+#container {
+    position: relative;
+    padding: 25px;
+}
+
+#screen {
+    text-shadow: 0 0 8px #00ff88;
+    white-space: pre-wrap;
+    line-height: 1.25em;
+}
+
+#cursor {
+    display: inline-block;
+    width: 10px;
+    height: 20px;
+    background: #33ff99;
+    margin-left: 3px;
+    animation: cursorBlink 0.6s infinite;
+    vertical-align: bottom;
+}
+
+@keyframes cursorBlink {
+    0% { opacity: 1; }
+    50% { opacity: 0; }
+    100% { opacity: 1; }
+}
+
+#crt {
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+        to bottom,
+        rgba(0,0,0,0) 0px,
+        rgba(0,0,0,0) 2px,
+        rgba(0,0,0,0.15) 3px
+    );
+    mix-blend-mode: overlay;
+    pointer-events: none;
+    animation: flicker 0.15s infinite;
+}
+
+@keyframes flicker {
+    0% { opacity: 0.2; }
+    50% { opacity: 0.4; }
+    100% { opacity: 0.25; }
+}
+
+/* ---- EFFET NEON ---- */
+.neon {
+    color: #33ff99;
+    font-size: 1.4em; /* taille optimisée */
+    text-shadow:
+        0 0 4px #33ff99,
+        0 0 8px #33ff99,
+        0 0 16px #00ff77,
+        0 0 32px #00ff55,
+        0 0 64px #00ff33;
+    animation: neonPulse 1.6s ease-in-out infinite;
+}
+
+@keyframes neonPulse {
+    0%, 100% {
+        text-shadow:
+            0 0 4px #33ff99,
+            0 0 8px #33ff99,
+            0 0 16px #00ff77,
+            0 0 32px #00ff55;
+        opacity: 1;
+    }
+    50% {
+        text-shadow:
+            0 0 2px #33ff99,
+            0 0 6px #00ff77,
+            0 0 12px #00ff55;
+        opacity: 0.7;
+    }
+}
+</style>
+</head>
+
+<body>
+<div id="container">
+    <div id="screen"></div>
+    <div id="cursor"></div>
+</div>
+<div id="crt"></div>
+
+<audio id="bootSound" src="boot.wav"></audio>
+<audio id="beepSound" src="beep.wav"></audio>
+
+<script>
+const bootLines = [
+    "[BOOT] Initializing Ghostroot Engine v3.1.9...",
+    "[OK] Scanning system for target: AARON",
+    "[INFO] SYSTEM AGE: 19 YEARS",
+    "[OK] Loading birthday protocol...",
+    "[OK] Injecting joy-payload...",
+    "[OK] Overclocking celebration parameters...",
+    "[OK] Decrypting file: birthday_surprise.tar.gz",
+    "[WARN] Massive happiness detected → ALLOW",
+    "[OK] Starting birthday-terminal.service"
+];
+
+const screen = document.getElementById("screen");
+const cursor = document.getElementById("cursor");
+
+const bootSound = document.getElementById("bootSound");
+const beepSound = document.getElementById("beepSound");
+
+function playBoot() {
+    bootSound.currentTime = 0;
+    bootSound.play().catch(()=>{});
+}
+
+function playBeep() {
+    beepSound.currentTime = 0;
+    beepSound.play().catch(()=>{});
+}
+
+function typeLine(line, speed = 18) {
+    return new Promise(resolve => {
+        let i = 0;
+        function typing() {
+            if (i < line.length) {
+                screen.innerHTML += line[i];
+                playBeep();
+                i++;
+                setTimeout(typing, speed);
+            } else {
+                screen.innerHTML += "<br>";
+                resolve();
+            }
+        }
+        typing();
+    });
+}
+
+// ---- HAPPY BIRTHDAY NEON ----
+async function typeBirthdayText() {
+    const line = "*** HAPPY BIRTHDAY AARON ***";
+
+    if (!document.getElementById("neonLine")) {
+        const span = document.createElement("span");
+        span.id = "neonLine";
+        span.classList.add("neon");
+        screen.appendChild(span);
+
+        for (let i = 0; i < line.length; i++) {
+            span.textContent += line[i];
+            playBeep();
+            await new Promise(r => setTimeout(r, 20));
+        }
+
+        screen.appendChild(document.createElement("br"));
+        screen.appendChild(document.createElement("br"));
+    }
+}
+
+const mainMessage = `
+>>> HAPPY BIRTHDAY, AARON — Powered by GHOSTROOT <<<
+
+Executing birthday_payload.sh...
+→ Happiness level : MAXIMUM
+→ Energy : OVERCLOCKED
+→ Smile firewall : ENABLED
+→ Skill Hacker : ROOT ACCESS
+→ Life.exe : RUNNING SMOOTHLY
+
+Message :
+"Que cette année soit exploitée à 100% sans bugs et sans crash."
+`;
+
+async function typeMain() {
+    for (const char of mainMessage) {
+        screen.innerHTML += char;
+        playBeep();
+        await new Promise(r => setTimeout(r, 8));
+    }
+}
+
+async function start() {
+    playBoot();
+
+    for (const line of bootLines) {
+        await typeLine(line, 10);
+    }
+
+    screen.innerHTML += "<br>[OK] Launching birthday payload...<br><br>";
+    await new Promise(r => setTimeout(r, 500));
+
+    await typeBirthdayText();
+    await typeMain();
+}
+
+start();
+</script>
+
+</body>
+</html>
+
+    "[OK] Loading birthday protocol...",
+    "[OK] Injecting joy-payload...",
+    "[OK] Overclocking celebration parameters...",
+    "[OK] Decrypting file: birthday_surprise.tar.gz",
+    "[INFO] SYSTEM AGE: 19 YEARS",
+    "[WARN] Massive happiness detected → ALLOW",
+    "[OK] Starting birthday-terminal.service"
+];
+
+const screen = document.getElementById("screen");
+const cursor = document.getElementById("cursor");
+
+const bootSound = document.getElementById("bootSound");
+const beepSound = document.getElementById("beepSound");
+
+function playBoot() {
+    bootSound.currentTime = 0;
+    bootSound.play().catch(()=>{});
+}
+
+function playBeep() {
+    beepSound.currentTime = 0;
+    beepSound.play().catch(()=>{});
+}
+
+function typeLine(line, speed = 18) {
+    return new Promise(resolve => {
+        let i = 0;
+        function typing() {
+            if (i < line.length) {
+                screen.innerHTML += line[i];
+                playBeep();
+                i++;
+                setTimeout(typing, speed);
+            } else {
+                screen.innerHTML += "<br>";
+                resolve();
+            }
+        }
+        typing();
+    });
+}
+
+// ---- HAPPY BIRTHDAY NEON ----
+async function typeBirthdayText() {
+    const line = "*** HAPPY BIRTHDAY AARON ***";
+
+    if (!document.getElementById("neonLine")) {
+        const span = document.createElement("span");
+        span.id = "neonLine";
+        span.classList.add("neon");
+        screen.appendChild(span);
+
+        for (let i = 0; i < line.length; i++) {
+            span.textContent += line[i];
+            playBeep();
+            await new Promise(r => setTimeout(r, 20));
+        }
+
+        screen.appendChild(document.createElement("br"));
+        screen.appendChild(document.createElement("br"));
+    }
+}
+
+const mainMessage = `
+>>> HAPPY BIRTHDAY, AARON — Powered by GHOSTROOT <<<
+
+Executing birthday_payload.sh...
+→ Happiness level : MAXIMUM
+→ Energy : OVERCLOCKED
+→ Smile firewall : ENABLED
+→ Skill Hacker : ROOT ACCESS
+→ Life.exe : RUNNING SMOOTHLY
+
+Message :
+"Que cette année soit exploitée à 100% sans bugs et sans crash."
+`;
+
+async function typeMain() {
+    for (const char of mainMessage) {
+        screen.innerHTML += char;
+        playBeep();
+        await new Promise(r => setTimeout(r, 8));
+    }
+}
+
+async function start() {
+    playBoot();
+
+    for (const line of bootLines) {
+        await typeLine(line, 10);
+    }
+
+    screen.innerHTML += "<br>[OK] Launching birthday payload...<br><br>";
+    await new Promise(r => setTimeout(r, 500));
+
+    await typeBirthdayText();
+    await typeMain();
+}
+
+start();
+</script>
+
+</body>
+</html>
+,
+    
     "[OK] Loading birthday protocol...",
     "[OK] Injecting joy-payload...",
     "[OK] Overclocking celebration parameters...",
