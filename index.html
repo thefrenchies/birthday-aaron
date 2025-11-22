@@ -65,23 +65,23 @@ body {
 /* ---- EFFET NEON ---- */
 .neon {
     color: #33ff99;
-    font-size: 2em; /* texte néon plus grand */
+    font-size: 1.4em; /* taille optimisée */
     text-shadow:
-        0 0 5px #33ff99,
-        0 0 10px #33ff99,
-        0 0 20px #00ff77,
-        0 0 40px #00ff55,
-        0 0 80px #00ff33;
+        0 0 4px #33ff99,
+        0 0 8px #33ff99,
+        0 0 16px #00ff77,
+        0 0 32px #00ff55,
+        0 0 64px #00ff33;
     animation: neonPulse 1.6s ease-in-out infinite;
 }
 
 @keyframes neonPulse {
     0%, 100% {
         text-shadow:
-            0 0 5px #33ff99,
-            0 0 10px #33ff99,
-            0 0 20px #00ff77,
-            0 0 40px #00ff55;
+            0 0 4px #33ff99,
+            0 0 8px #33ff99,
+            0 0 16px #00ff77,
+            0 0 32px #00ff55;
         opacity: 1;
     }
     50% {
@@ -155,18 +155,21 @@ function typeLine(line, speed = 18) {
 async function typeBirthdayText() {
     const line = "*** HAPPY BIRTHDAY AARON ***";
 
-    const span = document.createElement("span");
-    span.id = "neonLine";
-    screen.appendChild(span);
+    if (!document.getElementById("neonLine")) {
+        const span = document.createElement("span");
+        span.id = "neonLine";
+        span.classList.add("neon");
+        screen.appendChild(span);
 
-    for (let i = 0; i < line.length; i++) {
-        span.textContent += line[i];
-        playBeep();
-        await new Promise(r => setTimeout(r, 20));
+        for (let i = 0; i < line.length; i++) {
+            span.textContent += line[i];
+            playBeep();
+            await new Promise(r => setTimeout(r, 20));
+        }
+
+        screen.appendChild(document.createElement("br"));
+        screen.appendChild(document.createElement("br"));
     }
-
-    span.classList.add("neon");
-    screen.innerHTML += "<br><br>";
 }
 
 const mainMessage = `
