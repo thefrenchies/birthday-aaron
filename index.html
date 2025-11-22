@@ -26,26 +26,6 @@ body {
     line-height: 1.25em;
 }
 
-#screen .ascii-art {
-    display: block;
-    white-space: pre;
-    font-size: 12px;
-}
-
-@media (max-width: 600px) {
-    #screen .ascii-art {
-        font-size: 6px;
-        line-height: 1.1em;
-    }
-}
-
-@media (max-width: 400px) {
-    #screen .ascii-art {
-        font-size: 4.5px;
-        line-height: 1.1em;
-    }
-}
-
 #cursor {
     display: inline-block;
     width: 10px;
@@ -173,22 +153,14 @@ function assembleWord(word) {
 
 async function typeAscii() {
     const lines = assembleWord(word);
-    let asciiText = "";
     for (let i = 0; i < 6; i++) {
-        asciiText += lines[i] + "\n";
+        for (let j = 0; j < lines[i].length; j++) {
+            screen.textContent += lines[i][j];
+            playBeep();
+            await new Promise(r => setTimeout(r, 8));
+        }
+        screen.textContent += "\n";
     }
-    
-    // Wrap in span with class
-    const span = document.createElement('span');
-    span.className = 'ascii-art';
-    
-    for (let i = 0; i < asciiText.length; i++) {
-        span.textContent += asciiText[i];
-        playBeep();
-        await new Promise(r => setTimeout(r, 8));
-    }
-    
-    screen.appendChild(span);
 }
 
 // =============================================
