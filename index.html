@@ -9,10 +9,11 @@
 body {
     background: #000;
     color: #33ff99;
-    font-family: "Courier New", monospace, "Lucida Console", "DejaVu Sans Mono";
+    font-family: "Courier New", monospace;
     margin: 0;
-    height: 100vh;
-    overflow: hidden;
+    min-height: 100vh;
+    overflow-x: hidden;
+    overflow-y: auto;
 }
 
 #container {
@@ -22,11 +23,9 @@ body {
 
 #screen {
     text-shadow: 0 0 8px #00ff88;
-    white-space: pre; /* empêche le wrapping */
+    white-space: pre-wrap;
     line-height: 1.25em;
-    font-size: clamp(8px, 2.8vw, 18px); /* responsive pour mobile/desktop */
-    font-family: "Courier New", monospace, "Lucida Console", "DejaVu Sans Mono"; /* polices Unicode stables */
-    overflow-x: auto; /* scroll si le texte est trop large */
+    font-size: clamp(10px, 3vw, 16px);
 }
 
 #cursor {
@@ -64,6 +63,20 @@ body {
     50% { opacity: 0.4; }
     100% { opacity: 0.25; }
 }
+
+/* ASCII FIXED + RESPONSIVE */
+#asciiContainer {
+    white-space: pre;
+    overflow-x: auto;
+    overflow-y: hidden;
+    font-family: "Courier New", monospace;
+    text-shadow: 0 0 8px #00ff88;
+    width: 100%;
+    font-size: clamp(4px, 1.8vw, 14px);
+    margin-top: 20px;
+    -webkit-overflow-scrolling: touch;
+    line-height: 1.1;
+}
 </style>
 </head>
 
@@ -71,16 +84,12 @@ body {
 <div id="container">
     <div id="screen"></div>
     <div id="cursor"></div>
+    <div id="asciiContainer"></div>
 </div>
 <div id="crt"></div>
 
-<audio id="bootSound" src="boot.wav"></audio>
-<audio id="beepSound" src="beep.wav"></audio>
-
 <script>
-// =============================================
 // BOOT TEXT
-// =============================================
 const bootLines = [
     "[BOOT] Initializing Ghostroot Engine v3.1.9...",
     "[OK] Scanning system for target: AARON",
@@ -94,17 +103,25 @@ const bootLines = [
 
 const screen = document.getElementById("screen");
 const cursor = document.getElementById("cursor");
-const bootSound = document.getElementById("bootSound");
-const beepSound = document.getElementById("beepSound");
+const asciiContainer = document.getElementById("asciiContainer");
 
-function playBoot() {
-    bootSound.currentTime = 0;
-    bootSound.play().catch(()=>{});
-}
-
+// Beep sound simulation
 function playBeep() {
-    beepSound.currentTime = 0;
-    beepSound.play().catch(()=>{});
+    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    const oscillator = audioCtx.createOscillator();
+    const gainNode = audioCtx.createGain();
+    
+    oscillator.connect(gainNode);
+    gainNode.connect(audioCtx.destination);
+    
+    oscillator.frequency.value = 800;
+    oscillator.type = 'square';
+    
+    gainNode.gain.setValueAtTime(0.1, audioCtx.currentTime);
+    gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.03);
+    
+    oscillator.start(audioCtx.currentTime);
+    oscillator.stop(audioCtx.currentTime + 0.03);
 }
 
 function typeLine(line, speed = 18) {
@@ -113,7 +130,7 @@ function typeLine(line, speed = 18) {
         function typing() {
             if (i < line.length) {
                 screen.textContent += line[i];
-                playBeep();
+                if (Math.random() > 0.7) playBeep();
                 i++;
                 setTimeout(typing, speed);
             } else {
@@ -125,9 +142,6 @@ function typeLine(line, speed = 18) {
     });
 }
 
-// =============================================
-// HAPPY BIRTHDAY ASCII LETTERS
-// =============================================
 const H = ["██╗  ██╗","██║  ██║","███████║","██╔══██║","██║  ██║","╚═╝  ╚═╝"];
 const A = ["█████╗ ","██╔══██╗","███████║","██╔══██║","██║  ██║","╚═╝  ╚═╝"];
 const P = ["██████╗ ","██╔══██╗","██████╔╝","██╔═══╝ ","██║     ","╚═╝     "];
@@ -154,19 +168,9 @@ function assembleWord(word) {
 
 async function typeAscii() {
     const lines = assembleWord(word);
-    for (let i = 0; i < 6; i++) {
-        for (let j = 0; j < lines[i].length; j++) {
-            screen.textContent += lines[i][j];
-            playBeep();
-            await new Promise(r => setTimeout(r, 8));
-        }
-        screen.textContent += "\n";
-    }
+    asciiContainer.textContent = lines.join("\n");
 }
 
-// =============================================
-// MAIN MESSAGE
-// =============================================
 const mainMessage = `
 >>> HAPPY BIRTHDAY, AARON — Powered by GHOSTROOT <<<
 
@@ -184,20 +188,13 @@ Message :
 async function typeMain() {
     for (const char of mainMessage) {
         screen.textContent += char;
-        playBeep();
+        if (Math.random() > 0.8) playBeep();
         await new Promise(r => setTimeout(r, 8));
     }
 }
 
-// =============================================
-// FLOW
-// =============================================
 async function start() {
-    playBoot();
-
-    for (const line of bootLines) {
-        await typeLine(line, 10);
-    }
+    for (const line of bootLines) await typeLine(line, 10);
 
     screen.textContent += "\n[OK] Launching birthday payload...\n\n";
     await new Promise(r => setTimeout(r, 500));
@@ -205,7 +202,6 @@ async function start() {
     await typeAscii();
 
     screen.textContent += "\n\n";
-
     await typeMain();
 }
 
