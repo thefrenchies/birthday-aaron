@@ -62,32 +62,34 @@ body {
     100% { opacity: 0.25; }
 }
 
-/* ---- NEON TRÈS LÉGER ---- */
+/* ---- EFFET NEON ---- */
 .neon {
     color: #33ff99;
-    font-size: 28px;
-    font-weight: bold;
+    font-size: 2em; /* texte néon plus grand */
     text-shadow:
-        0 0 1px #33ff99,
-        0 0 2px #33ff99,
-        0 0 4px #00ff77;
+        0 0 5px #33ff99,
+        0 0 10px #33ff99,
+        0 0 20px #00ff77,
+        0 0 40px #00ff55,
+        0 0 80px #00ff33;
     animation: neonPulse 1.6s ease-in-out infinite;
 }
 
 @keyframes neonPulse {
     0%, 100% {
         text-shadow:
-            0 0 1px #33ff99,
-            0 0 2px #33ff99,
-            0 0 4px #00ff77;
+            0 0 5px #33ff99,
+            0 0 10px #33ff99,
+            0 0 20px #00ff77,
+            0 0 40px #00ff55;
         opacity: 1;
     }
     50% {
         text-shadow:
-            0 0 0.5px #33ff99,
-            0 0 1px #00ff77,
-            0 0 2px #00ff55;
-        opacity: 0.9;
+            0 0 2px #33ff99,
+            0 0 6px #00ff77,
+            0 0 12px #00ff55;
+        opacity: 0.7;
     }
 }
 </style>
@@ -149,13 +151,12 @@ function typeLine(line, speed = 18) {
     });
 }
 
-// ---- HAPPY BIRTHDAY NEON UNIQUE ----
+// ---- HAPPY BIRTHDAY NEON ----
 async function typeBirthdayText() {
     const line = "*** HAPPY BIRTHDAY AARON ***";
 
     const span = document.createElement("span");
-    span.classList.add("neon");
-    span.textContent = "";
+    span.id = "neonLine";
     screen.appendChild(span);
 
     for (let i = 0; i < line.length; i++) {
@@ -164,14 +165,13 @@ async function typeBirthdayText() {
         await new Promise(r => setTimeout(r, 20));
     }
 
-    // sauts de ligne ajoutés proprement
-    screen.appendChild(document.createElement("br"));
-    screen.appendChild(document.createElement("br"));
+    span.classList.add("neon");
+    screen.innerHTML += "<br><br>";
 }
 
-// ---- MAIN MESSAGE ----
 const mainMessage = `
-*** HAPPY BIRTHDAY, AARON — Powered by GHOSTROOT ***
+>>> HAPPY BIRTHDAY, AARON — Powered by GHOSTROOT <<<
+
 Executing birthday_payload.sh...
 → Happiness level : MAXIMUM
 → Energy : OVERCLOCKED
@@ -184,15 +184,10 @@ Message :
 `;
 
 async function typeMain() {
-    const lines = mainMessage.split("\n");
-    for (let i = 0; i < lines.length; i++) {
-        let line = lines[i];
-        // Affiche la première ligne normalement, pas en néon
-        screen.innerHTML += line + "<br>";
-        for (const char of line) {
-            playBeep();
-            await new Promise(r => setTimeout(r, 8));
-        }
+    for (const char of mainMessage) {
+        screen.innerHTML += char;
+        playBeep();
+        await new Promise(r => setTimeout(r, 8));
     }
 }
 
