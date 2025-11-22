@@ -26,37 +26,6 @@ body {
     line-height: 1.25em;
 }
 
-.neon {
-    color: #fff;
-    text-shadow: 
-        0 0 5px #fff,
-        0 0 10px #fff,
-        0 0 20px #fff,
-        0 0 40px #0ff,
-        0 0 80px #0ff,
-        0 0 90px #0ff,
-        0 0 100px #0ff,
-        0 0 150px #0ff;
-    animation: neonFlicker 1.5s infinite alternate;
-}
-
-@keyframes neonFlicker {
-    0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
-        text-shadow: 
-            0 0 5px #fff,
-            0 0 10px #fff,
-            0 0 20px #fff,
-            0 0 40px #0ff,
-            0 0 80px #0ff,
-            0 0 90px #0ff,
-            0 0 100px #0ff,
-            0 0 150px #0ff;
-    }
-    20%, 24%, 55% {
-        text-shadow: none;
-    }
-}
-
 #cursor {
     display: inline-block;
     width: 10px;
@@ -92,6 +61,36 @@ body {
     50% { opacity: 0.4; }
     100% { opacity: 0.25; }
 }
+
+/* ---- EFFET NEON ---- */
+.neon {
+    color: #33ff99;
+    text-shadow:
+        0 0 5px #33ff99,
+        0 0 10px #33ff99,
+        0 0 20px #00ff77,
+        0 0 40px #00ff55,
+        0 0 80px #00ff33;
+    animation: neonPulse 1.6s ease-in-out infinite;
+}
+
+@keyframes neonPulse {
+    0%, 100% {
+        text-shadow:
+            0 0 5px #33ff99,
+            0 0 10px #33ff99,
+            0 0 20px #00ff77,
+            0 0 40px #00ff55;
+        opacity: 1;
+    }
+    50% {
+        text-shadow:
+            0 0 2px #33ff99,
+            0 0 6px #00ff77,
+            0 0 12px #00ff55;
+        opacity: 0.7;
+    }
+}
 </style>
 </head>
 
@@ -106,9 +105,6 @@ body {
 <audio id="beepSound" src="beep.wav"></audio>
 
 <script>
-// =============================================
-// BOOT TEXT
-// =============================================
 const bootLines = [
     "[BOOT] Initializing Ghostroot Engine v3.1.9...",
     "[OK] Scanning system for target: AARON",
@@ -141,12 +137,12 @@ function typeLine(line, speed = 18) {
         let i = 0;
         function typing() {
             if (i < line.length) {
-                screen.textContent += line[i];
+                screen.innerHTML += line[i];
                 playBeep();
                 i++;
                 setTimeout(typing, speed);
             } else {
-                screen.textContent += "\n";
+                screen.innerHTML += "<br>";
                 resolve();
             }
         }
@@ -154,34 +150,24 @@ function typeLine(line, speed = 18) {
     });
 }
 
-// =============================================
-// HAPPY BIRTHDAY TEXT
-// =============================================
-const birthdayText = `
+// ---- HAPPY BIRTHDAY NEON ----
+async function typeBirthdayText() {
+    const line = ">>> HAPPY BIRTHDAY AARON <<<";
 
-          ★ ★ ★  HAPPY BIRTHDAY AARON  ★ ★ ★
+    const span = document.createElement("span");
+    span.id = "neonLine";
+    screen.appendChild(span);
 
-`;
-
-async function typeAscii() {
-    const startPos = screen.textContent.length;
-    for (const char of birthdayText) {
-        screen.textContent += char;
-        if (char !== '\n') playBeep();
-        await new Promise(r => setTimeout(r, 12));
+    for (let i = 0; i < line.length; i++) {
+        span.textContent += line[i];
+        playBeep();
+        await new Promise(r => setTimeout(r, 20));
     }
-    // Ajouter l'effet néon après l'animation
-    const lines = screen.textContent.split('\n');
-    const neonLine = lines.findIndex(line => line.includes('HAPPY BIRTHDAY AARON'));
-    if (neonLine !== -1) {
-        lines[neonLine] = `<span class="neon">${lines[neonLine]}</span>`;
-        screen.innerHTML = lines.join('\n');
-    }
+
+    span.classList.add("neon");
+    screen.innerHTML += "<br><br>";
 }
 
-// =============================================
-// MAIN MESSAGE
-// =============================================
 const mainMessage = `
 >>> HAPPY BIRTHDAY, AARON — Powered by GHOSTROOT <<<
 
@@ -198,15 +184,12 @@ Message :
 
 async function typeMain() {
     for (const char of mainMessage) {
-        screen.textContent += char;
+        screen.innerHTML += char;
         playBeep();
         await new Promise(r => setTimeout(r, 8));
     }
 }
 
-// =============================================
-// FLOW
-// =============================================
 async function start() {
     playBoot();
 
@@ -214,13 +197,10 @@ async function start() {
         await typeLine(line, 10);
     }
 
-    screen.textContent += "\n[OK] Launching birthday payload...\n\n";
+    screen.innerHTML += "<br>[OK] Launching birthday payload...<br><br>";
     await new Promise(r => setTimeout(r, 500));
 
-    await typeAscii();
-
-    screen.textContent += "\n";
-
+    await typeBirthdayText();
     await typeMain();
 }
 
