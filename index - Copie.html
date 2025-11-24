@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>H4CKED_B1RTHD4Y_SIM0N</title>
+<title>H4CKED_B1RTHD4Y_AARON</title>
 
 <style>
 body {
@@ -18,12 +18,17 @@ body {
 #container {
     position: relative;
     padding: 25px;
+    width: 100%; /* S'assure que le conteneur prend toute la largeur */
 }
 
 #screen {
     text-shadow: 0 0 8px #00ff88;
-    white-space: pre-wrap;
+    /* CORRECTION 1 : Utilisez 'pre' pour empêcher les retours à la ligne forcés */
+    white-space: pre; 
+    /* CORRECTION 2 : Permet le défilement horizontal si le contenu déborde (pour l'ASCII Art sur mobile) */
+    overflow-x: auto; 
     line-height: 1.25em;
+    padding-bottom: 20px; /* Ajouté pour ne pas couper le bas de l'écran lors du défilement */
 }
 
 #cursor {
@@ -75,9 +80,12 @@ body {
 <audio id="beepSound" src="beep.wav"></audio>
 
 <script>
+// =============================================
+// BOOT TEXT
+// =============================================
 const bootLines = [
     "[BOOT] Initializing Ghostroot Engine v3.1.9...",
-    "[OK] Scanning system for target: SIMON",
+    "[OK] Scanning system for target: AARON",
     "[OK] Loading birthday protocol...",
     "[OK] Injecting joy-payload...",
     "[OK] Overclocking celebration parameters...",
@@ -85,33 +93,6 @@ const bootLines = [
     "[WARN] Massive happiness detected → ALLOW",
     "[OK] Starting birthday-terminal.service"
 ];
-
-const mainMessage = `
-██████╗  ██╗  ██╗ ██████╗ ███████╗████████╗██████╗  ██████╗  ██████╗ 
-██╔══██╗ ██║  ██║██╔═══██╗██╔════╝╚══██╔══╝██╔══██╗██╔═══██╗██╔═══██╗
-██████╔╝ ███████║██║   ██║███████╗   ██║   ██████╔╝██║   ██║██║   ██║
-██╔══██╗ ██╔══██║██║   ██║╚════██║   ██║   ██╔══██╗██║   ██║██║   ██║
-██████╔╝ ██║  ██║╚██████╔╝███████║   ██║   ██║  ██║╚██████╔╝╚██████╔╝
-╚═════╝  ╚═╝  ╚═╝ ╚═════╝ ╚══════╝   ╚═╝   ╚═╝  ╚═╝ ╚═════╝  ╚═════╝ 
-
-   ██████╗  ██████╗  ███████╗ ████████╗██████╗  ██████╗ 
-  ██╔═══██╗██╔═══██╗ ██╔════╝ ╚══██╔══╝██╔══██╗██╔═══██╗
-  ██║   ██║██║   ██║ ███████╗    ██║   ██████╔╝██║   ██║
-  ██║   ██║██║   ██║ ╚════██║    ██║   ██╔══██╗██║   ██║
-  ╚██████╔╝╚██████╔╝ ███████║    ██║   ██║  ██║╚██████╔╝
-   ╚═════╝  ╚═════╝  ╚══════╝    ╚═╝   ╚═╝  ╚═════╝ 
-
->>> HAPPY BIRTHDAY, SIMON — Powered by GHOSTROOT <<<
-
-Executing birthday_payload.sh...
-→ Happiness level : MAXIMUM
-→ Energy : OVERCLOCKED
-→ Smile firewall : ENABLED
-→ Life.exe : RUNNING SMOOTHLY
-
-Message :
-"Que cette année soit exploitée à 100% sans bugs et sans crash."
-`;
 
 const screen = document.getElementById("screen");
 const cursor = document.getElementById("cursor");
@@ -121,12 +102,12 @@ const beepSound = document.getElementById("beepSound");
 
 function playBoot() {
     bootSound.currentTime = 0;
-    bootSound.play().catch(() => {});
+    bootSound.play().catch(()=>{});
 }
 
 function playBeep() {
     beepSound.currentTime = 0;
-    beepSound.play().catch(() => {});
+    beepSound.play().catch(()=>{});
 }
 
 function typeLine(line, speed = 18) {
@@ -147,6 +128,74 @@ function typeLine(line, speed = 18) {
     });
 }
 
+// =============================================
+// HAPPY BIRTHDAY ASCII LETTERS
+// =============================================
+const H = ["██╗  ██╗","██║  ██║","███████║","██╔══██║","██║  ██║","╚═╝  ╚═╝"];
+const A = ["█████╗ ","██╔══██╗","███████║","██╔══██║","██║  ██║","╚═╝  ╚═╝"];
+const P = ["██████╗ ","██╔══██╗","██████╔╝","██╔═══╝ ","██║    ","╚═╝    "];
+const Y = ["██╗  ██╗","╚██╗ ██╔╝"," ╚████╔╝ ","  ╚██╔╝  ","    ██║  ","    ╚═╝  "];
+const B = ["██████╗ ","██╔══██╗","██████╔╝","██╔══██╗","██████╔╝","╚═════╝ "];
+const I = ["██╗","██║","██║","██║","██║","╚═╝"];
+const R = ["██████╗ ","██╔══██╗","██████╔╝","██╔══██╗","██║  ██║","╚═╝  ╚═╝"];
+const T = ["████████╗","╚══██╔══╝","    ██║  ","    ██║  ","    ██║  ","    ╚═╝  "];
+const D = ["██████╗ ","██╔══██╗","██║  ██║","██║  ██║","██████╔╝","╚═════╝ "];
+
+const lettersMap = {H,A,P,Y,B,I,R,T,D};
+
+const word = "HAPPYBIRTHDAY";
+
+function assembleWord(word) {
+    const lines = ["","","","","",""];
+    for (const char of word) {
+        const letter = lettersMap[char];
+        for (let i = 0; i < 6; i++) {
+            lines[i] += letter[i] + "  ";
+        }
+    }
+    return lines;
+}
+
+async function typeAscii() {
+    const lines = assembleWord(word);
+    for (let i = 0; i < 6; i++) {
+        for (let j = 0; j < lines[i].length; j++) {
+            screen.textContent += lines[i][j];
+            playBeep();
+            await new Promise(r => setTimeout(r, 8));
+        }
+        screen.textContent += "\n";
+    }
+}
+
+// =============================================
+// MAIN MESSAGE
+// =============================================
+const mainMessage = `
+>>> HAPPY BIRTHDAY, AARON — Powered by GHOSTROOT <<<
+
+Executing birthday_payload.sh...
+→ Happiness level : MAXIMUM
+→ Energy : OVERCLOCKED
+→ Smile firewall : ENABLED
+→ Skill Hacker : ROOT ACCESS
+→ Life.exe : RUNNING SMOOTHLY
+
+Message :
+"Que cette année soit exploitée à 100% sans bugs et sans crash."
+`;
+
+async function typeMain() {
+    for (const char of mainMessage) {
+        screen.textContent += char;
+        playBeep();
+        await new Promise(r => setTimeout(r, 8));
+    }
+}
+
+// =============================================
+// FLOW
+// =============================================
 async function start() {
     playBoot();
 
@@ -157,14 +206,15 @@ async function start() {
     screen.textContent += "\n[OK] Launching birthday payload...\n\n";
     await new Promise(r => setTimeout(r, 500));
 
-    for (const char of mainMessage) {
-        screen.textContent += char;
-        playBeep();
-        await new Promise(r => setTimeout(r, 8));
-    }
+    await typeAscii();
+
+    screen.textContent += "\n\n";
+
+    await typeMain();
 }
 
 start();
 </script>
+
 </body>
 </html>
